@@ -9,8 +9,14 @@ class QuizController extends Controller
 {
     public function index(Request $request)
     {
-        if(!session('page')) {
+        if((int)session('page') > (int)session('lastPage')){
+            return view('quiz.details');
+        }
+
+        if(session('page') == 0) {
             session(['page' => 1]);
+            $lastPage = Question::all()->count() / config('pagination.questions');
+            session(['lastPage' => $lastPage]);
         } else {
             session(['page' => (int)$request->query('page')]);
         }
@@ -34,7 +40,13 @@ class QuizController extends Controller
         };
         $this->validate($request, $fields);
 
-        session(['answers' => $request->all()]);
+        if(!! session('answers')) {
+            $oldAnswers = collect(session('answers'));
+            $newAnswers = $oldAnswers->merge($request->all());
+            session(['answers' => $newAnswers]);
+        } else {
+            session(['answers' => $request->all()]);
+        }
 
         $val = (int)session('page');
         $val++;
