@@ -22,6 +22,7 @@
             'title' => $faker->sentence,
             'question_id' => function(){
                 return factory(\App\Question::class)->create()->id;
-            }
+            },
+            'correct' => (bool)random_int(0,1)
         ];
     });

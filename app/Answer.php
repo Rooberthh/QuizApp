@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'correct'];
+
+    protected $casts = [
+        'correct' => 'boolean'
+    ];
 
     public function question()
     {
