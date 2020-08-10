@@ -17,4 +17,5 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/quiz', 'QuizController@index');
+Route::name('quiz.index')->get('/quiz', 'QuizController@index');
+Route::name('quiz.store')->post('/quiz', 'QuizController@store');
