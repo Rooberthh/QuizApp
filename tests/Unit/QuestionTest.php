@@ -15,4 +15,13 @@ class QuestionTest extends TestCase
     {
         $this->assertInstanceOf("App\Question", create(Question::class));
     }
+
+    /** @test */
+    function it_consists_of_answers()
+    {
+        $question = create(Question::class);
+        $answer = create('App\Answer', ['question_id' => $question->id]);
+
+        $this->assertTrue($question->answers->contains($answer));
+    }
 }
