@@ -5,6 +5,8 @@
 
 
     use App\Answer;
+    use App\Question;
+    use App\Quiz;
     use Illuminate\Http\Request;
 
     class QuizDetailsController extends Controller
@@ -26,15 +28,31 @@
                 }
             }
 
-            $useranswers = Answer::find($answerIds);
-            $allanswers = Answer::all();
+            $allQuestions = Question::all();
 
+            $allCorrectAnswers = Answer::all()->where('correct', true)->groupBy('question_id');
+            $correctUserAnswers = Answer::find($answerIds)->where('correct', true)->groupBy('question_id');
 
             // Calculate amount of corrects
-            // Insert into Quizzes
+            $points = 0;
+            foreach($allCorrectAnswers as $index => $answers) {
+                if($correctUserAnswers[$index] == $answers){
+                    $points++;
+                }
+            }
+
+            Quiz::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'result' => $points
+            ]);
 
             //redirect to quizResults
 
-            return view('quiz.results', ['points' => 0]);
+            return view('quiz.results', [
+                                                'points' => $points,
+                                                'allQuestions' => $allQuestions,
+                                                'userAnswersIds' => $answerIds
+                                            ]);
         }
     }
