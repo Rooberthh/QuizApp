@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class QuizController extends Controller
@@ -10,7 +11,9 @@ class QuizController extends Controller
     public function index(Request $request)
     {
         if((int)session('page') > (int)session('lastPage')){
-            return view('quiz.details');
+            $passed = (session("start_time") > Carbon::now()->subMinutes(Config('timelimit.minutes')));
+
+            return view('quiz.details', compact('passed', $passed));
         }
 
         if(session('page') == 0) {
@@ -27,7 +30,7 @@ class QuizController extends Controller
         $questions = Question::skip($offset)->take(3)->get();
 
         session(['questions' => $questions]);
-
+        session(['start_time' => Carbon::now()]);
         return view('quiz.index', ['questions' => $questions]);
     }
 
