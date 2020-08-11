@@ -47,8 +47,6 @@
                 'result' => $points
             ]);
 
-            //redirect to quizResults
-
             return view('quiz.results', [
                                                 'points' => $points,
                                                 'allQuestions' => $allQuestions,
