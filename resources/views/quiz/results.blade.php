@@ -25,4 +25,8 @@
             </div>
         @endforeach
     </div>
+    </div>
+</div>
+
+    {{ session()->flush() }}
 @endsection

@@ -20,6 +20,7 @@
                         <p class='text-danger'> {{ $errors->first('email') }}</p>
                     @endif
                 </div>
+                <a href="?page={{ session('lastPage') }}">Previous</a>
                 <button type="submit" class="btn btn-primary">Show results</button>
             </form>
         @else

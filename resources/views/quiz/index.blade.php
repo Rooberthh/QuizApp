@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="container">
         <h2>Quiz</h2>
@@ -20,7 +19,14 @@
                                 <td>
                                     <label for="">
                                         {{ $answer->title }}
-                                        <input type="checkbox" {{ (is_array(old($question->title)) and in_array($answer->id, old($question->title))) ? ' checked' : '' }} name="{{$question->title}}[]" value="{{ $answer->id }}"/>
+                                        @if((is_array(old($question->title)) && in_array($answer->id, old($question->title))) ||
+                                            (!is_null(session('answers')) && collect(session('answers'))->has($question->title) &&
+                                            in_array($answer->id, session('answers')[$question->title]))
+                                        )
+                                            <input type="checkbox" checked name="{{$question->title}}[]" value="{{ $answer->id }}"/>
+                                        @else
+                                            <input type="checkbox" name="{{$question->title}}[]" value="{{ $answer->id }}"/>
+                                        @endif
                                     </label>
                                 </td>
                             @endforeach
@@ -28,7 +34,12 @@
                     @endforeach
                 </tbody>
             </table>
-            <button class="btn btn-primary">Submit</button>
+            @if((int)session('page') > 1)
+                <a href="?page={{ (int)session('page') - 1 }}">Previous</a>
+            @endif
+            <button class="btn btn-primary">
+                Submit
+            </button>
         </form>
     </div>
 @endsection
