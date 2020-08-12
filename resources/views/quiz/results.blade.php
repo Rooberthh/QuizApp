@@ -12,12 +12,15 @@
             <div>
                 <p>{{ $question->title }}</p>
             @foreach($question->answers as $answer)
-                @if(in_array($answer->id, $userAnswersIds))
-                <div class='bg-success p-2 my-2'>
+                @php
+                    $isChosenClass = (in_array($answer->id, $userAnswersIds) ? "is-chosen" : "");
+                @endphp
+                @if(in_array($answer->id, $userAnswersIds) && $answer->correct)
+                <div class='bg-success p-2 my-2 {{ $isChosenClass }}'>
                 @elseif($answer->correct)
-                <div class='bg-warning p-2 my-2'>
+                <div class='bg-warning p-2 my-2 {{ $isChosenClass }}'>
                 @else
-                <div class='bg-danger p-2 my-2'>
+                <div class='bg-danger p-2 my-2 {{ $isChosenClass }}'>
                 @endif
                     <p>{{ $answer->title }}</p>
                 </div>

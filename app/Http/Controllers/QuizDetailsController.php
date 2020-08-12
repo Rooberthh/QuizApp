@@ -35,8 +35,8 @@
 
             // Calculate amount of corrects
             $points = 0;
-            foreach($allCorrectAnswers as $index => $answers) {
-                if($correctUserAnswers[$index] == $answers){
+            foreach($correctUserAnswers as $index => $answers) {
+                if($allCorrectAnswers[$index] == $answers){
                     $points++;
                 }
             }
